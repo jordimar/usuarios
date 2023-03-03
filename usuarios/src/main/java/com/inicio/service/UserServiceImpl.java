@@ -34,7 +34,7 @@ public class UserServiceImpl {
 	
 	public void borraUser(String username) {
 		
-		userDetailsManager.deleteUser(username);
+		userDetailsManager.deleteUser(username);;;
 	}
 	
 	public boolean ifExist(String usuario) {
