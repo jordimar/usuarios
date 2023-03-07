@@ -1,15 +1,21 @@
 package com.inicio.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.User;
+
+import com.inicio.models.Rol;
+import com.inicio.repository.RolJpaRepository;
+import com.inicio.repository.UserJpaRepository;
 
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -17,15 +23,21 @@ public class UserServiceImpl {
 	@Autowired
 	private UserDetailsManager userDetailsManager;
 	
+	@Autowired
+	UserJpaRepository repo;
 	
-	public void altaUser(com.inicio.models.User usuario) {
+	@Autowired
+	RolJpaRepository repoRol;
+	
+	
+	public void altaUser(com.inicio.models.UserDto usuario) {
 		
 		UserDetails user = User.withUsername(usuario.getUsername()).password(passwordEncoder.encode(usuario.getPassword())).authorities(usuario.getRol()).build();
 		userDetailsManager.createUser(user);
 		
 	}
 	
-	public void modifUser(com.inicio.models.User usuario) {
+	public void modifUser(com.inicio.models.UserDto usuario) {
 		
 		UserDetails user = User.withUsername(usuario.getUsername()).password(passwordEncoder.encode(usuario.getPassword())).authorities(usuario.getRol()).build();
 		userDetailsManager.updateUser(user);
@@ -46,5 +58,19 @@ public class UserServiceImpl {
 	public UserDetails getUser(String username) {
 		
 		return userDetailsManager.loadUserByUsername(username);
+	}
+
+
+
+	@Override
+	public List<com.inicio.models.User> getUsuariosyroles() {
+		 
+		return repo.findAll();
+	}
+
+	@Override
+	public List<Rol> getRolesyUsuarios() {
+		 
+		return repoRol.findAll();
 	}
 }
