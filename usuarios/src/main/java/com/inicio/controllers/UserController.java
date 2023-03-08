@@ -73,7 +73,7 @@ public class UserController {
 	@PutMapping("/modif")
 	ResponseEntity<?> modif(@RequestBody UserDto user){
 		
-		service.modifUser(user);
+		service.modifUser(user); 
 		
 		return ResponseEntity.ok().build();
 	}
